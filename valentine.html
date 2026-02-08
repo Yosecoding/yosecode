@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>For You 💕</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            'val-pink': '#ec4899',
+            'val-dark': '#be185d',
+          }
+        }
+      }
+    }
+  </script>
+</head>
+<body class="bg-gradient-to-br from-pink-50 via-rose-50 to-purple-50 min-h-screen flex items-center justify-center p-4 md:p-8 font-sans">
+
+  <div class="max-w-2xl w-full bg-white/80 backdrop-blur-sm rounded-3xl shadow-2xl overflow-hidden border border-pink-100">
+
+    <!-- Header -->
+    <div class="bg-gradient-to-r from-pink-500 to-rose-500 p-8 text-center">
+      <h1 class="text-4xl md:text-5xl font-bold text-white drop-shadow-lg">
+        Hey swee ... 💭
+      </h1>
+    </div>
+
+    <!-- Main content -->
+    <div class="p-6 md:p-10 space-y-10">
+
+      <!-- Photos will appear here -->
+      <div id="photos" class="space-y-8"></div>
+
+      <!-- Messages appear here with typewriter effect -->
+      <div id="messages" class="text-lg md:text-xl leading-relaxed text-gray-800 text-center min-h-[180px] opacity-0 transition-opacity duration-1000">
+        <!-- Messages will be inserted here -->
+      </div>
+
+      <!-- The big question -->
+      <div id="question" class="hidden text-center space-y-8">
+        <h2 class="text-2xl md:text-3xl font-semibold text-gray-700">
+          BRIDGET ODUOL I have one very important question...
+        </h2>
+        <p class="text-4xl md:text-5xl font-bold text-val-pink animate-pulse">
+          Will you be my Valentine? 💕
+        </p>
+      </div>
+
+      <!-- Yes / No buttons -->
+      <div id="buttons" class="hidden flex flex-col sm:flex-row gap-6 justify-center pt-6">
+        <button id="yesBtn"
+                class="px-10 py-5 bg-val-pink hover:bg-val-dark text-white text-xl md:text-2xl font-bold rounded-full shadow-lg transform transition-all hover:scale-105 active:scale-95">
+          Yes 💖
+        </button>
+        <button id="noBtn"
+                class="px-10 py-5 bg-gray-500 hover:bg-gray-700 text-white text-xl md:text-2xl font-bold rounded-full shadow-lg transform transition-all hover:scale-105 active:scale-95">
+          No 😔
+        </button>
+      </div>
+
+      <!-- Response area -->
+      <div id="response" class="text-center text-2xl md:text-3xl font-bold text-val-pink min-h-[120px] pt-8"></div>
+
+    </div>
+  </div>
+
+  <script>
+    // ════════════════════════════════════════════════════════════════
+    //   Customize these parts
+    // ════════════════════════════════════════════════════════════════
+
+    const photos = [
+      "photos/photo1.jpg.jpeg",   // ← change to your real filenames or direct URLs
+      "photos/photo2.jpg.jpeg",
+      
+      
+    ];
+
+    const messages = [
+      "It's been three years of happiness filled with lots of memmories that am",
+      "thankful to have spent with you momma",
+      "Everyday is a blessing with you in my life 🌸",
+      "I am so sorry for not being the man you always want…",
+      "I strive to be, but sometimes fall short…",
+      "Hopefull to be that man one day 💕",
+      "With all that said,…",
+     
+      
+  
+   ];
+
+    const yesResponse = `
+      YAYYYYY!!! 🥰💖🎉<br><br>
+      NAJUA NI MECHII IMETUMAA <br><br>
+      Thank you for making me the happiest person alive right now<br>
+      I lOVE TO THE MOON AND BACK MOMMA 💕
+    `;
+
+    const noResponse = `
+      AAAAIIII WEE KWENDA TEBU FINYA YES… 🥺<br><br>
+      NASKIA NICHUKUE KISU NIJIDUNGEEE…<br>
+      SAWAAAA TUUH ENDEA AMAD BASII 🌸
+    `;
+
+    // ════════════════════════════════════════════════════════════════
+
+    const messageEl = document.getElementById('messages');
+    const photosEl  = document.getElementById('photos');
+    const questionEl = document.getElementById('question');
+    const buttonsEl  = document.getElementById('buttons');
+    const responseEl = document.getElementById('response');
+
+    // Typewriter effect
+    function typeWriter(text, element, speed = 50, callback) {
+      let i = 0;
+      element.innerHTML = '';
+      const interval = setInterval(() => {
+        if (i < text.length) {
+          element.innerHTML += text.charAt(i);
+          i++;
+          element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        } else {
+          clearInterval(interval);
+          if (callback) callback();
+        }
+      }, speed);
+    }
+
+    async function runSequence() {
+      // 1. Show photos one by one
+      for (const src of photos) {
+        const img = document.createElement('img');
+        img.src = src;
+        img.alt = "A special moment";
+        img.className = "w-full max-h-[420px] object-cover rounded-2xl shadow-xl mx-auto opacity-0 scale-95 transition-all duration-1000";
+        photosEl.appendChild(img);
+
+        setTimeout(() => {
+          img.classList.remove('opacity-0', 'scale-95');
+          img.classList.add('opacity-100', 'scale-100');
+        }, 300);
+
+        await new Promise(r => setTimeout(r, 2400));
+      }
+
+      // 2. Show messages with typewriter effect
+      messageEl.classList.remove('opacity-0');
+
+      for (const msg of messages) {
+        const p = document.createElement('p');
+        p.className = 'mb-6';
+        messageEl.appendChild(p);
+
+        await new Promise(resolve => {
+          typeWriter(msg, p, 45, resolve);
+        });
+
+        await new Promise(r => setTimeout(r, 700));
+      }
+
+      // 3. Show question + buttons
+      await new Promise(r => setTimeout(r, 1600));
+      questionEl.classList.remove('hidden');
+      await new Promise(r => setTimeout(r, 1400));
+      buttonsEl.classList.remove('hidden');
+    }
+
+    // Button actions
+    document.getElementById('yesBtn').onclick = () => {
+      responseEl.innerHTML = yesResponse;
+      responseEl.classList.add('animate-bounce');
+    };
+
+    document.getElementById('noBtn').onclick = () => {
+      responseEl.innerHTML = noResponse;
+      responseEl.classList.add('animate-pulse');
+    };
+
+    // Start everything after page load
+    window.addEventListener('load', () => {
+      setTimeout(runSequence, 800);
+    });
+  </script>
+</body>
+</html>
